@@ -1,10 +1,12 @@
 lockfileVersion: 5.4
 
 specifiers:
+  body-parser: '*'
   express: '*'
   openai: '*'
 
 dependencies:
+  body-parser: 1.20.1
   express: 4.18.2
   openai: 3.2.1
 

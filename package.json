@@ -7,7 +7,8 @@
   "license": "MIT",
    "dependencies": {
     "express": "*",
-    "openai": "*"
+    "openai": "*",
+    "body-parser": "*"
   },
   "scripts": {
     "start": "node index.js"
