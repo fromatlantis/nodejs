@@ -6,7 +6,8 @@
   "author": "alphasec",
   "license": "MIT",
    "dependencies": {
-    "express": "*"
+    "express": "*",
+    "openai": "*"
   },
   "scripts": {
     "start": "node index.js"
