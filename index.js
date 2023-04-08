@@ -20,11 +20,7 @@ app.post("/v1/chat/completions", async (req, res) => {
   try {
       console.log(req.body);
     const openaiRes = await openaiClient.createChatCompletion(
-      {
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: "Hello world" }],
-        stream: true
-      },
+      req.body,
       { responseType: "stream" }
     );
     // res.setHeader("content-type", "text/event-stream");
