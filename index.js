@@ -16,7 +16,7 @@ app.get("/hello", (req, res) => {
   res.send("world");
 });
 
-app.post("/v1/chat/completions", async (req, res) => {
+app.get("/v1/chat/completions", async (req, res) => {
   try {
     console.log(process.env.OPENAI_API_KEY);
     const openaiRes = await openaiClient.createChatCompletion(
