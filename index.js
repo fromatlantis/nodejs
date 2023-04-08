@@ -1,5 +1,6 @@
-const express = require("express");
 const bodyParser = require("body-parser");
+const express = require("express");
+const rateLimit = require("express-rate-limit");
 const { Configuration, OpenAIApi } = require("openai");
 
 const PORT = 3000;
@@ -18,7 +19,13 @@ app.get("/hello", (req, res) => {
   res.send("world");
 });
 
-app.post("/v1/chat/completions", async (req, res) => {
+const chatLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 2,
+  message: "Too many accounts created from this IP, please try again after an hour.",
+});
+
+app.post("/v1/chat/completions", chatLimiter, async (req, res) => {
   try {
     const openaiRes = await openaiClient.createChatCompletion(req.body, {
       responseType: "stream",
@@ -31,7 +38,6 @@ app.post("/v1/chat/completions", async (req, res) => {
 
 app.post("/v1/images/generations", async (req, res) => {
   try {
-    console.log(req.body)
     const openaiRes = await openaiClient.createImage(req.body);
     res.send(openaiRes.data);
   } catch (error) {

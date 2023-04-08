@@ -8,7 +8,8 @@
    "dependencies": {
     "express": "*",
     "openai": "*",
-    "body-parser": "*"
+    "body-parser": "*",
+    "express-rate-limit": "*"
   },
   "scripts": {
     "start": "node index.js"
