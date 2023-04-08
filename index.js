@@ -27,7 +27,7 @@ app.get("/v1/chat/completions", async (req, res) => {
       },
       { responseType: "stream" }
     );
-    res.setHeader("content-type", "text/event-stream");
+    // res.setHeader("content-type", "text/event-stream");
     openaiRes.data.pipe(res);
   } catch (error) {
     res.status(500).send(error.message);
