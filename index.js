@@ -5,7 +5,7 @@ const { Configuration, OpenAIApi } = require("openai");
 const { encode } = require("gpt-3-encoder");
 
 const PORT = 3000;
-const MAX_TOKENS = 5;
+const MAX_TOKENS = process.env.MAX_TOKENS || 512;
 
 const app = express();
 
