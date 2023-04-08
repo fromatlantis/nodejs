@@ -34,7 +34,7 @@ app.post("/v1/chat/completions", chatLimiter, async (req, res) => {
       const length = encode(cur.content).length;
       return acc + length;
     }, 0);
-    if(tokensLength > 10){
+    if(tokensLength > MAX_TOKENS){
       res.status(500).send({
         error: {
           message: `max_tokens is limited: ${MAX_TOKENS}`
@@ -60,7 +60,7 @@ const imageLimiter = rateLimit({
 app.post("/v1/images/generations", imageLimiter, async (req, res) => {
   try {
     const tokensLength = encode(req.body.prompt).length
-    if(tokensLength > 10){
+    if(tokensLength > MAX_TOKENS){
       res.status(500).send({
         error: {
           message: `max_tokens is limited: ${MAX_TOKENS}`
