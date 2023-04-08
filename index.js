@@ -18,9 +18,17 @@ app.get("/hello", (req, res) => {
 
 app.post("/v1/chat/completions", async (req, res) => {
   try {
-    const openaiRes = await openaiClient.createChatCompletion(req.body, { responseType: 'stream' });
+    console.log(process.env.OPENAI_API_KEY);
+    const openaiRes = await openaiClient.createChatCompletion(
+      {
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: "Hello world" }],
+        stream: true
+      },
+      { responseType: "stream" }
+    );
     res.setHeader("content-type", "text/event-stream");
-    openaiRes.data.pipe(res)
+    openaiRes.data.pipe(res);
   } catch (error) {
     res.status(500).send(error.message);
   }
