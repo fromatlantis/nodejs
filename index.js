@@ -6,7 +6,7 @@ const PORT = 3000;
 
 const app = express();
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 const openaiConfig = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -31,6 +31,7 @@ app.post("/v1/chat/completions", async (req, res) => {
 
 app.post("/v1/images/generations", async (req, res) => {
   try {
+    console.log(req.body)
     const openaiRes = await openaiClient.createImage(req.body);
     res.send(openaiRes.data);
   } catch (error) {
