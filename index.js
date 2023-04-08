@@ -18,7 +18,7 @@ app.get("/hello", (req, res) => {
 
 app.post("/v1/chat/completions", async (req, res) => {
   try {
-    console.log(req.body);
+      console.log(req.body);
     const openaiRes = await openaiClient.createChatCompletion(
       {
         model: "gpt-3.5-turbo",
