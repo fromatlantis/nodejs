@@ -9,7 +9,8 @@
     "express": "*",
     "openai": "*",
     "body-parser": "*",
-    "express-rate-limit": "*"
+    "express-rate-limit": "*",
+    "gpt-3-encoder": "*" 
   },
   "scripts": {
     "start": "node index.js"

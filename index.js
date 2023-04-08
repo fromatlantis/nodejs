@@ -2,8 +2,10 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const { Configuration, OpenAIApi } = require("openai");
+const { encode } = require("gpt-3-encoder");
 
 const PORT = 3000;
+const MAX_TOKENS = 5;
 
 const app = express();
 
@@ -20,24 +22,51 @@ app.get("/hello", (req, res) => {
 });
 
 const chatLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 2,
-  message: "Too many accounts created from this IP, please try again after an hour.",
+  windowMs: 8 * 60 * 60 * 1000, // 8 hoour
+  max: 9,
+  message:
+    "Too many requests created from this IP, please try again after 8 hour.",
 });
 
 app.post("/v1/chat/completions", chatLimiter, async (req, res) => {
   try {
+    const tokensLength = req.body.messages.reduce((acc, cur) => {
+      const length = encode(cur.content).length;
+      return acc + length;
+    }, 0);
+    if(tokensLength > 10){
+      res.status(500).send({
+        error: {
+          message: `max_tokens is limited: ${MAX_TOKENS}`
+        }
+      });
+    }
     const openaiRes = await openaiClient.createChatCompletion(req.body, {
       responseType: "stream",
     });
     openaiRes.data.pipe(res);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send(error.message);
   }
 });
 
-app.post("/v1/images/generations", async (req, res) => {
+const imageLimiter = rateLimit({
+  windowMs: 8 * 60 * 60 * 1000, // 8 hoour
+  max: 3,
+  message:
+    "Too many requests created from this IP, please try again after an hour.",
+});
+
+app.post("/v1/images/generations", imageLimiter, async (req, res) => {
   try {
+    const tokensLength = encode(req.body.prompt).length
+    if(tokensLength > 10){
+      res.status(500).send({
+        error: {
+          message: `max_tokens is limited: ${MAX_TOKENS}`
+        }
+      });
+    }
     const openaiRes = await openaiClient.createImage(req.body);
     res.send(openaiRes.data);
   } catch (error) {
