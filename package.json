@@ -6,6 +6,7 @@
   "author": "alphasec",
   "license": "MIT",
    "dependencies": {
+    "@vercel/node": "^2.9.13",
     "express": "*",
     "openai": "*",
     "body-parser": "*",
